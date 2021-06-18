@@ -3,10 +3,9 @@ import { Component } from 'react'
 import { Searchbar } from './components/Searchbar';
 import { Button } from './components/Button'
 import { ImageGallery } from './components/ImageGallery'
-import imgApi from './services/images-api'
+import  getImg  from './services/images-api'
+import {Spinner} from './components/Loader'
 
-import Loader from "react-loader-spinner";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import './App.css';
 
 class App extends Component  {
@@ -14,7 +13,7 @@ class App extends Component  {
     images: [],
     searchValue: '',
     page: 1,
-    isLoading: false
+    isLoading: false,
   }
 
   findImages = ( value) => {
@@ -35,7 +34,7 @@ class App extends Component  {
 
     this.setState({isLoading: true})
 
-    imgApi
+    getImg
       .fetch(options)
       .then(images => this.setState(prevState => ({
         images: [...prevState.images, ...images],
@@ -61,7 +60,7 @@ class App extends Component  {
         <ImageGallery images={this.state.images} />
         
         {this.state.images.length !== 0 && <Button onSubmit={this.fetchImages} />}
-        {this.state.isLoading && <Loader className="Loader" type="ThreeDots" color="#00BFFF" height={80} width={80} />}
+        {this.state.isLoading && <Spinner />}
       </>
     )
   }
